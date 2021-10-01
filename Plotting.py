@@ -140,43 +140,53 @@ def parse_y_data(xdata,ydata,zdata):
 
 
 def csv_to_plot():
+    # Initializing empty lists
     distance = []
     xdata = []
     ydata = []
     zdata = []
+    # Finding the gradient and intercept values based
+    # on calibration data
     m,b = find_m_b()
+    # reading the raw data and putting the values into different lists
     df = pd.read_csv (r'full_scan2.csv')
     voltage_list = df['Voltage'].tolist()
     pan_list = df['Pan Angle'].tolist()
     tilt_list = df['Tilt Angle'].tolist()
+    # Converting voltage to distance
     for voltage in voltage_list:
         distance.append(voltage_to_distance(voltage,m,b))
+    # Converting spherical coordinates to cartesian
     for i in range(len(pan_list)):
        x,y,z =  polar2cart(distance[i], tilt_list[i],pan_list[i])
        xdata.append(x[0])
        ydata.append(y[0])
        zdata.append(z)
-    # zdata = [0] * 81
+    # Creating two sets of data for plotting in different colors
     newx,newy,newz,diff_x,diff_y,diff_z = parse_y_data(xdata,ydata,zdata)
-    # plot_3d(xdata,ydata,zdata)
     plot_3d_2(diff_x,diff_y,diff_z,newx,newy,newz)
 
 def csv_to_plot_2d():
+    # Initializing empty lists
     distance = []
     xdata = []
     ydata = []
+    # Finding the gradient and intercept values based
+    # on calibration data
     m,b = find_m_b()
+    # reading the raw data and putting the values into different lists
     df = pd.read_csv (r'single_servo2.csv')
     voltage_list = df['Voltage'].tolist()
     tilt_list = df['Tilt Angle'].tolist()
-    # tilt_list = [angle - 50 for angle in tilt_list]
+    # Converting voltage to distance
     for voltage in voltage_list:
         distance.append(voltage_to_distance(voltage,m,b))
+    # Converting polar coordinates to cartesian
     for i in range(len(tilt_list)):
        x,y =  polar2cart2d(distance[i], tilt_list[i])
-       x = x[0] + 15
        xdata.append(x)
        ydata.append(y)
+    # Plotting data
     plot_2d(xdata,ydata)
     plt.show()
 
