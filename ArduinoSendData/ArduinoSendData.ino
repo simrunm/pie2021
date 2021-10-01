@@ -21,8 +21,8 @@ void loop()
   Serial.println(SensorValue); // printing the value to serial prot
   delay(500); // a delay so that there is not too much data
 
-  // pans across the letter and for every angle, the tilt servo scans the letter from top to bottom in order to get a full 
-  // scan of the letter.
+  // pans across the letter and for every angle, the tilt servo scans the letter from top 
+  // to bottom in order to get a full scan of the letter.
   for (panPos = 75; panPos <= 115; panPos += 3) { 
     panServo.write(panPos);  // tell servo to go to position in variable 'panPos'
     for (tiltPos = 70; tiltPos <= 120; tiltPos += 3){ 
